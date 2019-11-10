@@ -1,2 +1,8 @@
 # hello-world
-un primer repositorio para aprender github
+un primer repositorio 
+
+Hola humanos!!
+
+Haciendo pruebas sobre mi primer branch en Github
+
+
