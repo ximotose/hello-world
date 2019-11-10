@@ -1,5 +1,5 @@
 # hello-world
-un primer repositorio para aprender github
+un primer repositorio 
 
 Hola humanos!!
 
