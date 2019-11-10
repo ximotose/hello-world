@@ -1,0 +1,93 @@
+---
+title: "Tarea01"
+author: "Joaquín Torres"
+date: "9/23/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(readxl)  # para leer archivos .xlsx
+library(reshape)
+library(tidyverse)
+library(readr)   # para leer archivos .csv
+library(kableExtra) # para insertar tablas bonitas
+library(quantmod) # Calculos financieros
+```
+
+## Sobre la distribución de los precios y rentabilidades en base a los datos históricos
+
+En base a las cotizaciones de precios^[Se trabaja con precios ajustados] para los activos financieros, en el archivo cotizaciones.xlsx disponible en los materiales de UACloud, correspondientes a los activos financieros
+
+- BBVA (BBVA)
+- Santander (SAN)
+- Telefónica (TEF)
+- Mediaset (TL5)
+- Inditex (ITX)
+- IBEX (IBEX)
+
+disponibles desde el 2-01-2015. 
+
+Realizar un primer análisis estadístico básico sobre la distribución de precios y/o rentabilidades diarias y mensuales.
+
+```{r datos, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE, results='asis'}
+
+stocks_read <- read_csv("stocks_adjust.csv", col_names = TRUE)
+#stocks_read <- stocks_read[,-c(6,7)] # para eliminar ITX y el IBEX
+names(stocks_read) <- c("Fecha", "BBVA", "SAN", "TEF", "TL5", "ITX", "IBEX")
+stocks_xts <- xts(stocks_read[,2:7], order.by=stocks_read$Fecha) #como serie temporal
+```
+
+
+### Calcular
+
+1. Características estadísticas básicas, esperanza y varianza para el periodo siguiente.
+2. Representación gráfica.
+3. Histograma.
+4. Suponiendo que las rentabilidades mensuales se ajustan a una distribución normal, con la media y varianza dada por los resultados de la pregunta 1, contestar a las siguientes preguntas;
+    a. ¿Cuál es la probabilidad de que el próximo mes la rentabilidad real se encuentre en los valores dado por la rentabilidad media más-menos una vez la desviación estándar? ¿Y que se encuentres entre los valores, rentabilidad media más-menos 2 veces la desviación estándar?
+    b. ¿Cuál es la probabilidad de que la rentabilidad mensual del próximo mes sea negativa? 
+5. Determinar la covarianza y correlaciones de cada par de AF. Representarla gráficamente.
+6. Representar en el espacio media varianza cada uno de los activos financieros.
+
+## Resolución
+
+### Características estadísticas básicas
+
+Un resumen descriptivo de las cotizaciones podria venir dado por la siguiente tabla
+
+```{r}
+cuartiles <- apply(stocks_read[,-1], 2, summary)
+varianza <- apply(stocks_read[,-1], 2, var)
+volatilidad <- apply(stocks_read[,-1], 2, sd)
+kable(rbind(cuartiles, varianza, volatilidad))
+```
+
+
+
+#### Representación gráfica de la evolución de la cotización
+
+```{r echo=FALSE, warning=FALSE}
+stocks_plot <- stocks_read %>% 
+  gather(key = "Activo", value = "Precio", -Fecha)
+ggplot(stocks_plot, aes(x = Fecha, y = Precio )) + 
+  geom_line() +
+  facet_wrap(~ Activo, scales = "free")
+```
+
+
+
+
+#### Representación gráfica de la evolución de la rentabilidad
+```{r echo=FALSE, warning=FALSE}
+stocks_return <- apply(stocks_read[,-1], 2, Delt, type = "log") #Calculo de las rentabilidades diarias logaritmica
+stocks_return <- cbind(stocks_read[,1], stocks_return)
+return_xts <- xts(stocks_return[,-1], order.by=stocks_read$Fecha) #como serie temporal
+
+return_plot <- stocks_return %>% 
+  gather(key = "Activo", value = "Rentabilidad", -Fecha)
+ggplot(return_plot, aes(x = Fecha, y = Rentabilidad )) + 
+  geom_line() +
+  facet_wrap(~ Activo)
+```
+
