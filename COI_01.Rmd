@@ -1,0 +1,83 @@
+---
+title: "COI"
+author: "Joaquín Torres"
+date: "10/2/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(quantmod)
+library(tidyr)
+library(knitr)
+library(formatR)
+library(data.table)
+library(broom) # para cargar la funcion tidy() que reshape los objeto xts con muchas columnas, de ancho a largo
+
+#source("Descarga_Datos.R")
+source("fun_menorriesgo.R")
+
+
+```
+
+# Datos disponibles
+
+Tenemos un archivo de datos que contiene las cotizaciones mensuales de las siguientes empresas del IBEX 35, desde enero de 2015 hasta septiembre de 2019
+
+Valores seleccionados
+
+ - Banco Santander (SAN.MC)
+ - BBVA (BBVA.MC)
+ - Telefónica de España (TEF.MC)
+ - Mediaset España comunicación (TL5.MC)
+ - Inditex (ITX.MC)
+ - Iberdrola (IBE.MC)
+ - Melia hoteles internacional (MEL.MC)
+ - Red Electrica Corporación (REE.MC)
+ - Inmobiliaria colonial (COL.MC)
+
+
+
+
+```{r carga de datos, warning=FALSE} 
+kable(head(stocks_month_adj))
+class(stocks_month_adj)
+
+# cot_mes <- cbind(stocks_month_adj$BBVA.MC.Adjusted, stocks_month_adj$TEF.MC.Adjusted, stocks_month_adj$ITX.MC.Adjusted)
+# head(cot_mes)
+# return_mes <- apply(cot_mes, 2, Delt, type = "log") #Calculo de las rentabilidades diarias logaritmica, genera matrix
+# #return_mes <- cbind(index(cot_mes), return_mes) # añadir columna de fechas
+# names(return_mes) <- c("BBVA", "TEF", "ITX") # cambiar nombre de las columnas
+# 
+# return_mes <- as.xts(return_mes[-1, ], order.by = index(cot_mes[-1])) # convertir a objeto xts
+# 
+# return_mes_summary <- return_mes %>% 
+#   apply(2, summary)
+# 
+# er_mes <- return_mes_summary[4,]
+# 
+# 
+# mu <- mean(return_mes)
+# V <- cov(return_mes)
+# 
+# rho_V <- cov2cor(V)
+# 
+# resultados <- list(return_mes_mean, V, rho_V)
+# 
+# #
+# # gráfico de rentabilidades mensuales
+# tidy(return_mes) %>%
+#   ggplot(aes(x=index,y=value)) + geom_line()+
+#    facet_wrap(~ series)
+# 
+# resultados
+# #
+# # 
+# # return_plot <- return_mes_df %>%
+# #   gather(key = "Activo", value = "Rentabilidad", -index)
+# # ggplot(return_plot, aes(x = index, y = Rentabilidad )) +
+# #   geom_line() +
+# #   facet_wrap(~ Activo)
+```
+
