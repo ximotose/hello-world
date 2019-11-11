@@ -21,6 +21,11 @@ source("fun_menorriesgo.R")
 
 ```
 
+<!---
+
+mas cambio 
+
+--->
 
 
 # Datos disponibles
