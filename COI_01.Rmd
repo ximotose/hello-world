@@ -22,10 +22,6 @@ source("fun_menorriesgo.R")
 ```
 
 
-<!---
-
-algun pequeño cambio de prueba para git hub
---->
 
 # Datos disponibles
 
