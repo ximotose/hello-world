@@ -21,9 +21,6 @@ source("fun_menorriesgo.R")
 
 ```
 
-
-
-
 # Datos disponibles
 
 Tenemos un archivo de datos que contiene las cotizaciones mensuales de las siguientes empresas del IBEX 35, desde enero de 2015 hasta septiembre de 2019
